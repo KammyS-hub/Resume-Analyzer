@@ -4,7 +4,7 @@ AI Resume Analyzer is an AI powered resume evaluation tool that analyzes resumes
 
 ## Features
 
-* Resume Parsing
+* Resume Parsing 
 * ATS Score Calculation
 * Skill Gap Analysis
 * Resume Recommendation Engine
