@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
-    <title>AI Resume Analyzer</title>
+    <title>AI Resume Analyzer V3</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -11,108 +10,95 @@
 
 <div class="container">
 
-```
-<h1> AI Resume Analyzer</h1>
-<p class="subtitle">
-    Analyze your resume against a job description and improve your ATS score.
-</p>
+    <h1>AI Resume Intelligence System (V3)</h1>
 
-<form action="/" method="POST" enctype="multipart/form-data">
+    <p class="subtitle">
+        Upload your resume and get ATS + Skill + Link intelligence analysis
+    </p>
 
-    <label>Upload Resume (PDF)</label>
-    <input type="file" name="resume" accept=".pdf" required>
+    <form action="/" method="POST" enctype="multipart/form-data">
 
-    <label>Paste Job Description</label>
+        <label>Upload Resume (PDF)</label>
+        <input type="file" name="resume" required>
 
-    <textarea
-        name="job_desc"
-        rows="8"
-        placeholder="Paste job description here..."
-    ></textarea>
+        <label>Paste Job Description</label>
+        <textarea name="job_desc" rows="8" placeholder="Paste job description here..."></textarea>
 
-    <button type="submit">
-        Analyze Resume
-    </button>
+        <button type="submit">Analyze Resume</button>
 
-</form>
+    </form>
 
-{% if score is not none %}
+    {% if score is not none %}
 
-<div class="card">
-
-    <h2>ATS Score</h2>
-
-    <div class="progress-bar">
-        <div class="progress-fill" style="width: {{ score }}%;">
-            {{ score }}%
-        </div>
+    <!-- CONTACT -->
+    <div class="card">
+        <h3>📧 Contact Info</h3>
+        <p>Email: {{ extracted_email }}</p>
+        <p>Phone: {{ extracted_phone }}</p>
     </div>
 
-</div>
+    <!-- ATS SCORE -->
+    <div class="card">
+        <h3>📊 ATS Score</h3>
+        <p><strong>{{ score }}%</strong></p>
+    </div>
 
-<div class="card">
+    <!-- LINK INTELLIGENCE -->
+    <div class="card">
+        <h3>🔗 Link Intelligence Score</h3>
+        <p><strong>{{ link_score }}%</strong></p>
 
-    <h3>✅ Matched Skills</h3>
+        <ul>
+            {% for item in link_details %}
+            <li>
+                <b>{{ item.type }}</b> → {{ item.score }} pts
+                <br>
+                <small>{{ item.link }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 
-    <ul>
-        {% for skill in matched_skills %}
-        <li>{{ skill }}</li>
-        {% endfor %}
-    </ul>
+    <!-- MATCHED SKILLS -->
+    <div class="card">
+        <h3>✅ Matched Skills</h3>
+        <ul>
+            {% for skill in matched_skills %}
+            <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 
-</div>
+    <!-- MISSING SKILLS -->
+    <div class="card">
+        <h3>❌ Missing Skills</h3>
+        <ul>
+            {% for skill in missing_skills %}
+            <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 
-<div class="card">
+    <!-- RESUME HEALTH -->
+    <div class="card">
+        <h3>📋 Resume Health Check</h3>
 
-    <h3>❌ Missing Skills</h3>
+        <h4>Found Sections</h4>
+        <ul>
+            {% for section in found_sections %}
+            <li>✅ {{ section }}</li>
+            {% endfor %}
+        </ul>
 
-    <ul>
-        {% for skill in missing_skills %}
-        <li>{{ skill }}</li>
-        {% endfor %}
-    </ul>
+        <h4>Missing Sections</h4>
+        <ul>
+            {% for section in missing_sections %}
+            <li>❌ {{ section }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 
-</div>
-
-<div class="card">
-
-    <h3>💡 Recommendations</h3>
-
-    <ul>
-        {% for skill in missing_skills %}
-        <li>
-            Add projects, coursework, or certifications related to
-            <strong>{{ skill }}</strong>.
-        </li>
-        {% endfor %}
-    </ul>
-
-</div>
-
-<div class="card">
-
-    <h3>📋 Resume Health Check</h3>
-
-    <h4>Found Sections</h4>
-
-    <ul>
-        {% for section in found_sections %}
-        <li>✅ {{ section }}</li>
-        {% endfor %}
-    </ul>
-
-    <h4>Missing Sections</h4>
-
-    <ul>
-        {% for section in missing_sections %}
-        <li>❌ {{ section }}</li>
-        {% endfor %}
-    </ul>
-
-</div>
-
-{% endif %}
-```
+    {% endif %}
 
 </div>
 
